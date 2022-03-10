@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "name": "Issue 1: On-call",
+    "price": 1200,
+    "image": "/static/images/increment_issue_1.jpeg"
+  },
+  {
+    "id": 2,
+    "name": "Issue 2: Cloud",
+    "price": 1200,
+    "image": "/static/images/increment_issue_2.jpeg"
+  },
+  {
+    "id": 3,
+    "name": "Issue 3: Development",
+    "price": 1200,
+    "image": "/static/images/increment_issue_3.jpeg"
+  },
+  {
+    "id": 4,
+    "name": "Issue 3: Energy & Development",
+    "price": 1200,
+    "image": "/static/images/increment_issue_4.jpeg"
+  },
+  {
+    "id": 5,
+    "name": "Issue 5: Programming Languages",
+    "price": 1400,
+    "image": "/static/images/increment_issue_5.jpeg"
+  },
+  {
+    "id": 6,
+    "name": "Issue 6: Documentation",
+    "price": 1400,
+    "image": "/static/images/increment_issue_6.jpeg"
+  },
+  {
+    "id": 7,
+    "name": "Issue 7: Security",
+    "price": 1400,
+    "image": "/static/images/increment_issue_7.jpeg"
+  },
+  {
+    "id": 8,
+    "name": "Issue 8: Internationalization",
+    "price": 1400,
+    "image": "/static/images/increment_issue_8.jpeg"
+  },
+  {
+    "id": 9,
+    "name": "Issue 9: Open Source",
+    "price": 1400,
+    "image": "/static/images/increment_issue_9.jpeg"
+  },
+  {
+    "id": 10,
+    "name": "Issue 10: Testing",
+    "price": 1400,
+    "image": "/static/images/increment_issue_10.jpeg"
+  },
+  {
+    "id": 11,
+    "name": "Issue 11: Teams",
+    "price": 1400,
+    "image": "/static/images/increment_issue_11.jpeg"
+  },
+  {
+    "id": 12,
+    "name": "Issue 12: Software Architecture",
+    "price": 1400,
+    "image": "/static/images/increment_issue_12.jpeg"
+  },
+  {
+    "id": 13,
+    "name": "Issue 13: Frontend",
+    "price": 1400,
+    "image": "/static/images/increment_issue_13.jpeg"
+  },
+  {
+    "id": 14,
+    "name": "Issue 14: APIs",
+    "price": 1400,
+    "image": "/static/images/increment_issue_14.png"
+  },
+  {
+    "id": 15,
+    "name": "A guide to distributed teams",
+    "price": 500,
+    "image": "/static/images/increment_guide_distributed_teams.jpeg"
+  }
+]
