@@ -29,6 +29,10 @@ export function useCart() {
     }
   }
 
+  function clearCart() {
+    cart.value = [];
+  }
+
   function removeItem(index) {
     console.log(index);
     cart.value.splice(index, 1);
@@ -39,5 +43,6 @@ export function useCart() {
     addToCart,
     cart,
     removeItem,
+    clearCart,
   };
 }

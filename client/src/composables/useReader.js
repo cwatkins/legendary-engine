@@ -18,6 +18,14 @@ export function useReader() {
     return readers;
   }
 
+  async function retrieveReader(readerId) {
+    const response = await fetch(
+      `/api/retrieve-terminal-reader?reader_id=${readerId}`
+    );
+    const reader = await response.json();
+    return reader;
+  }
+
   async function processPaymentIntent(paymentIntentId, readerId) {
     const response = await fetch("/api/process-payment-intent", {
       method: "POST",
@@ -45,6 +53,39 @@ export function useReader() {
     return result;
   }
 
+  async function pollReader(
+    readerId,
+    paymentIntentId,
+    interval = 3000,
+    maxTries = 10
+  ) {
+    let tries = 0;
+    async function execute(resolve, reject) {
+      tries++;
+      const reader = await retrieveReader(readerId);
+      const { reader_state } = reader;
+      if (
+        reader_state.action.status === "succeeded" ||
+        reader_state.action.status === "failed"
+      ) {
+        return resolve(reader);
+      } else if (tries === maxTries) {
+        return reject(new Error("Max tries exceeded"));
+      } else if (
+        reader_state.action.process_payment_intent !== paymentIntentId
+      ) {
+        return reject(
+          new Error(
+            `Polling for wrong Payment Intent. Got ${reader_state.action.process_payment_intent} from reader but expected ${paymentIntentId}`
+          )
+        );
+      } else {
+        setTimeout(execute, interval, resolve, reject);
+      }
+    }
+    return new Promise(execute);
+  }
+
   async function cancelTerminalAction(readerId) {
     const response = await fetch("/api/cancel-terminal-action", {
       method: "POST",
@@ -63,5 +104,6 @@ export function useReader() {
     processPaymentIntent,
     simulatePayment,
     cancelTerminalAction,
+    pollReader,
   };
 }

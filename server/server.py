@@ -47,9 +47,21 @@ def create_location():
 @app.route("/list-terminal-locations", methods=['GET'])
 def list_locations():
     try:
-        limit = request.query.get("limit")
+        limit = request.args.get("limit")
         locations = stripe.terminal.Location.list(limit=limit)
         return jsonify({"locations": locations})
+    except stripe.error.StripeError as e:
+        return jsonify({"error": {"message": str(e)}})
+    except Exception as e:
+        return jsonify({"error": {"message": str(e)}})
+
+
+@app.route("/retrieve-terminal-reader", methods=['GET'])
+def retrieve_reader():
+    try:
+        reader_id = request.args.get("reader_id")
+        reader_state = stripe.terminal.Reader.retrieve(reader_id)
+        return jsonify({"reader_state": reader_state})
     except stripe.error.StripeError as e:
         return jsonify({"error": {"message": str(e)}})
     except Exception as e:
