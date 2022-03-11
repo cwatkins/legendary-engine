@@ -1,7 +1,7 @@
 <template>
   <button>
     <div class="flex flex-col">
-      <h3 class="">{{ props.name }}</h3>
+      <h3 class="font-bold text-slate-700">{{ props.name }}</h3>
       <img :src="props.image" alt="Item title" class="m-1 rounded-lg" />
       <div class="flex flex-col justify-between">
         <p class="">{{ props.price }}</p>

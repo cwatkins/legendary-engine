@@ -4,7 +4,9 @@ import { useReader } from "./composables/useReader";
 import { useCart } from "./composables/useCart";
 import { usePayment } from "./composables/usePayment";
 
-import MenuItem from "./components/MenuItem.vue";
+import MenuGallery from "./components/MenuGallery.vue";
+import MenuInstructions from "./components/MenuInstructions.vue";
+import ReaderMenu from "./components/ReaderMenu.vue";
 
 const products = ref([]);
 const readerState = ref(null);
@@ -36,7 +38,7 @@ const isComplete = computed(() => {
 });
 
 const isReady = computed(() => {
-  return subTotal.value > 100 && selectedReader.value;
+  return subTotal.value > 100 && selectedReader.value ? true : false;
 });
 
 async function listProducts() {
@@ -50,16 +52,16 @@ async function handlePayment() {
     paymentIntentId.value = await createPaymentIntent(subTotal.value);
   }
 
-  // Process payment
+  // 1. Process payment
   const { reader_state: processState, error: processError } =
     await processPaymentIntent(paymentIntentId.value, selectedReader.value.id);
   readerState.value = processState.action.status;
 
-  // Simulate result
+  // 2. (Optional) Simulate result
   const { reader_state: simulateState, error: simulatePaymentError } =
     await simulatePayment(selectedReader.value.id);
-  // readerState.value = simulateState.action.status;
 
+  // 3. Poll for results
   const { reader_state: polledReaderState } = await pollReader(
     selectedReader.value.id,
     paymentIntentId.value,
@@ -77,16 +79,20 @@ function reset() {
 </script>
 
 <template>
-  <div class="max-h-full min-w-screen max-w-screen">
-    <header class="bg-black text-center text-slate-50 min-w-full">
-      Increment Store
-      <span v-if="selectedReader">
-        ({{ selectedReader.id }}) {{ readerState }}
-      </span>
+  <div class="max-h-full min-w-screen max-w-screen bg-color-neutral-50">
+    <header
+      class="flex justify-around px-2 bg-sky-600 text-center text-slate-50 min-w-full"
+    >
+      <span> Increment Store </span>
+      <div class="w-1/3 flex">
+        <span v-if="selectedReader" class="truncate justify-start">
+          {{ selectedReader.label }} {{ readerState }}
+        </span>
+      </div>
     </header>
     <main class="flex flex-row">
-      <section
-        class="grid grid-cols-3 gap-1 mr-2 overflow-y-auto h-screen w-3/5"
+      <!-- <section
+        class="grid grid-cols-2 gap-1 mr-2 overflow-y-auto h-screen w-2/5"
       >
         <menu-item
           v-for="product in products"
@@ -97,26 +103,39 @@ function reset() {
           class="border"
           @click="addToCart(product)"
         />
-      </section>
-      <section class="flex flex-col w-2/5 mr-2">
+      </section> -->
+      <menu-gallery :products="products" @add-to-cart="addToCart" />
+      <section class="flex flex-col w-3/5 mr-2 text-slate-800">
         <div class="h-1/2 overflow-y-auto">
+          <menu-instructions
+            :selected-reader="selectedReader"
+            :is-ready="isReady"
+            :has-empty-cart="cart.length > 0"
+          />
+          <!-- <div v-if="!isReady" class="mt-2">
+            <p class="font-semibold">Demo Instructions</p>
+            <p v-if="!selectedReader">
+              Select a reader by clicking the link icon under "Readers".
+            </p>
+            <p v-if="cart.length === 0">Add at least one book to the cart.</p>
+          </div> -->
           <div
             v-for="(item, index) in cart"
             :key="item.name"
-            class="flex flex-row justify-between mt-2 text-base"
+            class="flex flex-row justify-between mt-2 text-base text-slate-800"
           >
             <!-- Line item -->
             <div class="flex flex-row w-full">
               <div>
                 <button
-                  class="bg-black text-slate-50 px-2"
+                  class="bg-sky-600 text-slate-50 px-2"
                   @click="item.quantity++"
                 >
                   +
                 </button>
                 <input :value="item.quantity" class="w-6 text-center" />
                 <button
-                  class="bg-black text-slate-50 px-2"
+                  class="bg-sky-600 text-slate-50 px-2"
                   @click="item.quantity--"
                 >
                   -
@@ -152,7 +171,7 @@ function reset() {
             class="text-slate-50 w-full p-2 mt-2"
             :class="{
               'bg-emerald-500': isComplete,
-              'bg-black': !isComplete,
+              'bg-sky-600': !isComplete,
               'opacity-50': !isReady,
             }"
             :disabled="!isReady"
@@ -180,12 +199,7 @@ function reset() {
             <span v-else @click="handlePayment()">Checkout</span>
           </button>
         </div>
-        <!-- TODO: Add test card options -->
-        <div v-show="false" class="text-xl pt-2">
-          <h2>Test Card</h2>
-          <input id="" type="radio" name="" />
-        </div>
-        <div class="flex flex-col pt-4">
+        <!-- <div class="flex flex-col pt-4">
           <hr />
           <span class="text-xl">Readers</span>
           <div class="space-y-2 overflow-y-auto mt-2">
@@ -231,7 +245,12 @@ function reset() {
               </button>
             </div>
           </div>
-        </div>
+        </div> -->
+        <reader-menu
+          :readers="readers"
+          :selected-reader="selectedReader"
+          @set-reader="(reader) => (selectedReader = reader)"
+        />
       </section>
     </main>
   </div>
