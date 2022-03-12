@@ -1,8 +1,8 @@
-import { ref, onBeforeMount } from "vue";
+import { ref } from "vue";
 
 export function useReader() {
   const readers = ref([]);
-  const selectedReader = ref(null);
+  const currentReader = ref(null);
 
   async function retrieveReader(readerId) {
     const response = await fetch(
@@ -86,7 +86,7 @@ export function useReader() {
 
   return {
     readers,
-    selectedReader,
+    currentReader,
     processPaymentIntent,
     simulatePayment,
     cancelTerminalAction,

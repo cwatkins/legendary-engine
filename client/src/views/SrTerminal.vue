@@ -6,38 +6,61 @@ import SrCart from "../components/SrCart.vue";
 import SrTotal from "../components/SrTotal.vue";
 import SrCheckoutButton from "../components/SrCheckoutButton.vue";
 import SrReaderList from "../components/SrReaderList.vue";
+import SrMessage from "../components/SrMessage.vue";
 
 import { useCart } from "../composables/useCart";
 import { usePayment } from "../composables/usePayment";
 import { useReader } from "../composables/useReader";
 
+const modalText = ref(null);
+const modalTitle = ref(null);
+/**
+ * Composables (hooks) for keeping state of the cart, its subtotal
+ * and a function for adding items to it
+ */
 const { cart, subTotal, addToCart } = useCart();
 
-const currentReader = ref(null);
-const paymentState = ref(null);
+/** Payment Intent var and a composable (hook) for creating one */
+const { paymentIntentId, createPaymentIntent } = usePayment();
 
+/**
+ * Composables (hooks) for processing a payment, simulating completing,
+ * and polling a reader for the payment's status
+ */
+const { currentReader, processPaymentIntent, simulatePayment, pollReader } =
+  useReader();
+
+/**
+ * Computes whether Checkout can be done based on having items in the cart
+ * and a reader currently selected
+ */
 const checkoutReady = computed(() => {
   return currentReader.value && cart.value.length ? true : false;
 });
 
-const { processPaymentIntent, simulatePayment, pollReader } = useReader();
-const { paymentIntentId, createPaymentIntent } = usePayment();
+/** Reactive var for maintain payment's status */
+const paymentState = ref(null);
 
+/**
+ * Function for handling a payment using Payment Intents and Terminal
+ */
 async function handlePayment() {
   if (!paymentIntentId.value) {
     paymentIntentId.value = await createPaymentIntent(subTotal.value);
   }
 
-  // 1. Process payment
+  /**  1. Process payment */
   const { reader_state: processState, error: processError } =
     await processPaymentIntent(paymentIntentId.value, currentReader.value.id);
   paymentState.value = processState.action.status;
 
-  // 2. (Optional) Simulate result
-  const { reader_state: simulateState, error: simulatePaymentError } =
-    await simulatePayment(currentReader.value.id);
+  /** 2. (Optional) Simulate result. */
+  if (currentReader.value.device_type.includes("simulated")) {
+    const { reader_state: simulateState, error: simulatePaymentError } =
+      await simulatePayment(currentReader.value.id);
+  }
 
-  // 3. Poll for results
+  /**  3. Poll for results */
   const { reader_state: polledReaderState } = await pollReader(
     currentReader.value.id,
     paymentIntentId.value,
@@ -45,6 +68,9 @@ async function handlePayment() {
     10
   );
   paymentState.value = polledReaderState.action.status;
+
+  modalText.value = polledReaderState;
+  modalTitle.value = "Payment status: " + paymentState.value;
 }
 
 function reset() {
@@ -52,8 +78,19 @@ function reset() {
   paymentIntentId.value = null;
   paymentState.value = null;
 }
+
+function closeModal() {
+  reset();
+  modalText.value = null;
+  modalTitle.value = null;
+}
 </script>
 <template>
+  <sr-message
+    :modal-text="modalText"
+    :modal-title="modalTitle"
+    @close-modal="closeModal"
+  />
   <div class="max-h-full min-w-screen max-w-screen bg-color-neutral-50">
     <sr-header />
   </div>
@@ -61,16 +98,13 @@ function reset() {
     <sr-gallery @add-to-cart="addToCart" />
     <div class="flex flex-col w-3/5 mr-2 text-slate-800">
       <sr-cart :cart="cart" />
-      <div>
-        <hr />
-        <sr-total :total="subTotal" />
-        <sr-checkout-button
-          :checkout-ready="checkoutReady"
-          :payment-state="paymentState"
-          @handle-payment="handlePayment()"
-          @clear-cart="reset()"
-        />
-      </div>
+      <sr-total :total="subTotal" />
+      <sr-checkout-button
+        :checkout-ready="checkoutReady"
+        :payment-state="paymentState"
+        @handle-payment="handlePayment()"
+        @clear-cart="reset()"
+      />
       <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />
     </div>
   </div>

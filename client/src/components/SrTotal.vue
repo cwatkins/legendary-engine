@@ -9,6 +9,7 @@ const props = defineProps({
 </script>
 
 <template>
+  <hr />
   <div class="flex flex-row justify-between">
     <span class="text-xl">Total</span>
     <span>{{ total }}</span>
