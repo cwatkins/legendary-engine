@@ -68,15 +68,30 @@ async function handlePayment() {
     10
   );
   paymentState.value = polledReaderState.action.status;
+  return { readerState: polledReaderState, paymentState: paymentState.value };
+}
 
-  modalText.value = polledReaderState;
-  modalTitle.value = "Payment status: " + paymentState.value;
+async function checkout() {
+  try {
+    const { readerState, paymentState } = await handlePayment();
+    const paymentTitle = "Payment " + paymentState;
+    const paymentMessage = JSON.stringify(readerState, null, 2);
+    setModal(paymentTitle, paymentMessage);
+  } catch (error) {
+    const errorMessage = JSON.stringify(error, null, 2);
+    setModal("Error", errorMessage);
+  }
 }
 
 function reset() {
   cart.value = [];
   paymentIntentId.value = null;
   paymentState.value = null;
+}
+
+function setModal(title, text) {
+  modalTitle.value = title;
+  modalText.value = text;
 }
 
 function closeModal() {
@@ -96,13 +111,13 @@ function closeModal() {
   </div>
   <div class="flex flex-row">
     <sr-gallery @add-to-cart="addToCart" />
-    <div class="flex flex-col w-3/5 mr-2 text-slate-800">
+    <div class="flex flex-col w-3/5 px-2 pt-2 mr-2 text-slate-800">
       <sr-cart :cart="cart" />
       <sr-total :total="subTotal" />
       <sr-checkout-button
         :checkout-ready="checkoutReady"
         :payment-state="paymentState"
-        @handle-payment="handlePayment()"
+        @handle-payment="checkout()"
         @clear-cart="reset()"
       />
       <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />

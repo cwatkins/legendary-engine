@@ -1,4 +1,6 @@
 <script setup>
+import { formatter } from "../helpers";
+
 const props = defineProps({
   cart: {
     type: Array,
@@ -11,15 +13,6 @@ const props = defineProps({
 </script>
 <template>
   <div class="h-1/2 overflow-y-auto">
-    <transition
-      enter-from-class="transform opacity-0"
-      enter-active-class="delay-100 duration-100 ease-out"
-      leave-to-class="transform opacity-0"
-      leave-from-class="opacity-100"
-      leave-active-class="duration-100 ease-in"
-    >
-      <p v-if="cart.length === 0">1. Add at least one product.</p>
-    </transition>
     <transition-group
       enter-from-class="transform opacity-0"
       enter-active-class="delay-100 duration-200 ease-out"
@@ -35,14 +28,14 @@ const props = defineProps({
         <div class="flex flex-row w-full">
           <div>
             <button
-              class="bg-sky-600 text-slate-50 px-2"
+              class="bg-sky-600 text-slate-50 px-2 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
               @click="item.quantity++"
             >
               +
             </button>
             <input :value="item.quantity" class="w-6 text-center" />
             <button
-              class="bg-sky-600 text-slate-50 px-2"
+              class="bg-sky-600 text-slate-50 px-2 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
               @click="item.quantity--"
             >
               -
@@ -50,8 +43,11 @@ const props = defineProps({
           </div>
           <span class="ml-2 text-left">{{ item.name }}</span>
         </div>
-        <div>{{ item.price * item.quantity }}</div>
-        <button class="ml-2" @click="item.quantity = 0">
+        <div>{{ formatter.format((item.price / 100) * item.quantity) }}</div>
+        <button
+          class="ml-2 hover:brightness-200 hover:scale-110"
+          @click="item.quantity = 0"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-5 w-5"

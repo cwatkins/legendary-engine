@@ -1,4 +1,5 @@
 <script setup>
+import { formatter } from "../helpers";
 const props = defineProps({
   total: {
     type: Number,
@@ -12,6 +13,6 @@ const props = defineProps({
   <hr />
   <div class="flex flex-row justify-between">
     <span class="text-xl">Total</span>
-    <span>{{ total }}</span>
+    <span>{{ formatter.format(total / 100) }}</span>
   </div>
 </template>
