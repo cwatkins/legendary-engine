@@ -4,20 +4,6 @@ export function useReader() {
   const readers = ref([]);
   const selectedReader = ref(null);
 
-  onBeforeMount(async () => {
-    try {
-      readers.value = await listReaders();
-    } catch (error) {
-      console.log(error); //TODO: surface issues in UI
-    }
-  });
-
-  async function listReaders() {
-    const response = await fetch("/api/list-terminal-readers");
-    const { readers } = await response.json();
-    return readers;
-  }
-
   async function retrieveReader(readerId) {
     const response = await fetch(
       `/api/retrieve-terminal-reader?reader_id=${readerId}`

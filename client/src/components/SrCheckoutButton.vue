@@ -31,37 +31,13 @@ const emit = defineEmits(["clearCart", "handlePayment"]);
     :disabled="!checkoutReady || paymentState === 'in_progress'"
     @click="handleClick"
   >
-    <transition
-      enter-from-class="transform opacity-0"
-      enter-active-class="delay-700 duration-500 ease-out"
-      leave-to-class="transform opacity-0"
-      leave-from-class="opacity-100"
-      leave-active-class="duration-400 ease-in"
+    <span v-if="paymentState === 'succeeded'">Clear cart</span>
+    <span
+      v-if="paymentState === 'in_progress'"
+      class="flex items-center justify-center"
     >
-      <span v-if="paymentState === 'succeeded'">Clear cart</span>
-    </transition>
-    <transition
-      enter-from-class="transform opacity-0"
-      enter-active-class="delay-700 duration-500 ease-out"
-      leave-to-class="transform opacity-0"
-      leave-from-class="opacity-100"
-      leave-active-class="duration-400 ease-in"
-    >
-      <span
-        v-if="paymentState === 'in_progress'"
-        class="flex items-center justify-center"
-      >
-        Loading...
-      </span>
-    </transition>
-    <transition
-      enter-from-class="transform opacity-0"
-      enter-active-class="delay-700 duration-500 ease-out"
-      leave-to-class="transform opacity-0"
-      leave-from-class="opacity-100"
-      leave-active-class="duration-400 ease-in"
-    >
-      <span v-if="!paymentState">Checkout</span>
-    </transition>
+      Loading...
+    </span>
+    <span v-if="!paymentState">Checkout</span>
   </button>
 </template>
