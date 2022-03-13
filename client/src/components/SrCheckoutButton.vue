@@ -22,10 +22,9 @@ const emit = defineEmits(["clearCart", "handlePayment"]);
 </script>
 <template>
   <button
-    class="text-slate-50 w-full p-2 mt-2 transition duration-300 bg-sky-600 rounded-md hover:brightness-125 scale-95"
+    class="text-slate-50 w-full p-2 mt-2 transition duration-300 bg-sky-600 rounded-md hover:brightness-125"
     :class="{
       'opacity-50': !checkoutReady,
-      'hover:scale-100': checkoutReady,
     }"
     :disabled="!checkoutReady || paymentState === 'in_progress'"
     @click="handleClick"

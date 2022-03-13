@@ -23,7 +23,7 @@ const props = defineProps({
       <div
         v-for="item in cart"
         :key="item.name"
-        class="flex flex-row justify-between mt-2 text-base text-slate-800"
+        class="flex flex-row justify-between mt-2 text-base text-slate-800 font-medium"
       >
         <div class="flex flex-row w-full">
           <div>

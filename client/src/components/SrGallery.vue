@@ -20,14 +20,22 @@ const emit = defineEmits(["addToCart"]);
 
 <template>
   <section class="grid grid-cols-2 gap-1 mr-2 overflow-y-auto h-screen w-1/2">
-    <sr-gallery-item
-      v-for="product in products"
-      :key="product.name"
-      :name="product.name"
-      :price="product.price"
-      :image="product.image"
-      class="border"
-      @click="emit('addToCart', product)"
-    />
+    <transition-group
+      enter-from-class="transform opacity-0"
+      enter-active-class="delay-100 duration-200 ease-out"
+      leave-to-class="transform opacity-0"
+      leave-from-class="opacity-100"
+      leave-active-class="duration-200 ease-in"
+    >
+      <sr-gallery-item
+        v-for="product in products"
+        :key="product.name"
+        :name="product.name"
+        :price="product.price"
+        :image="product.image"
+        class="border"
+        @click="emit('addToCart', product)"
+      />
+    </transition-group>
   </section>
 </template>

@@ -7,8 +7,6 @@ stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 stripe.api_version = "2020-08-27;terminal_server_driven_beta=v1"
 app = Flask(__name__, static_url_path='/static')
 
-READERS = {}
-
 
 @app.route("/list-products", methods=['GET'])
 def get_products():
@@ -16,42 +14,6 @@ def get_products():
         with open('db.json') as json_file:
             data = json.load(json_file)
             return jsonify({"product_list": data})
-    except Exception as e:
-        return jsonify({"error": {"message": str(e)}})
-
-
-@app.route("/create-location", methods=['POST'])
-def create_location():
-    try:
-        request_json = request.json
-        display_name = request_json.get("display_name")
-        address = request_json.get("address")
-        new_location = stripe.terminal.Location.create(
-            display_name=display_name,
-            address={
-                "line1": address.get("line1"),
-                "line2": address.get("line2"),
-                "city": address.get("city"),
-                "state": address.get("state"),
-                "country": address.get("country"),
-                "postal_code": address.get("postal_code"),
-            }
-        )
-        return jsonify({"location": new_location})
-    except stripe.error.StripeError as e:
-        return jsonify({"error": {"message": str(e)}}), 400
-    except Exception as e:
-        return jsonify({"error": {"message": str(e)}}), 400
-
-
-@app.route("/list-terminal-locations", methods=['GET'])
-def list_locations():
-    try:
-        limit = request.args.get("limit")
-        locations = stripe.terminal.Location.list(limit=limit)
-        return jsonify({"locations": locations})
-    except stripe.error.StripeError as e:
-        return jsonify({"error": {"message": str(e)}})
     except Exception as e:
         return jsonify({"error": {"message": str(e)}})
 
@@ -66,25 +28,6 @@ def retrieve_reader():
         return jsonify({"error": {"message": str(e)}})
     except Exception as e:
         return jsonify({"error": {"message": str(e)}})
-
-
-@app.route("/register-terminal-reader", methods=['POST'])
-def register_reader():
-    try:
-        request_json = request.json
-        registration_code = request_json.get('registration_code')
-        label = request_json.get('label')
-        location = request_json.get('location')
-        new_reader = stripe.terminal.Reader.create(
-            registration_code=registration_code,
-            label=label,
-            location=location
-        )
-        return jsonify({"reader": new_reader})
-    except stripe.error.StripeError as e:
-        return jsonify({'error': {'message': str(e)}}), 400
-    except Exception as e:
-        return jsonify({'error': {'mesage': str(e)}}), 400
 
 
 @app.route("/list-terminal-readers", methods=['GET'])
@@ -170,12 +113,6 @@ def capture_payment_intent():
         return jsonify({'error': {'message': str(e)}}), 400
     except Exception as e:
         return jsonify({'error': {'message': str(e)}}), 400
-
-
-@app.route("/stream", methods=['GET'])
-def stream():
-    # While True send events for the reader
-    return
 
 
 if __name__ == '__main__':

@@ -1,14 +1,20 @@
-import { ref, watchEffect, computed, onBeforeMount } from "vue";
+import { ref, watchEffect, watch, computed } from "vue";
 
 export function useCart() {
-  const cart = ref([]);
+  // const cart = ref([]);
+  const shadowCart = ref([]);
 
-  watchEffect(() => {
-    cart.value.forEach((x, index) => {
-      if (x.quantity < 1) {
-        cart.value.splice(index, 1);
-      }
-    });
+  // watchEffect(() => {
+  // cart.value.forEach((x) => {
+  //   if (x.quantity <= 0) {
+  //     const index = cart.value.indexOf(x.name);
+  //     cart.value.splice(index, 1);
+  //   }
+  // });
+  // });
+
+  const cart = computed(() => {
+    return shadowCart.value.filter((x) => x.quantity > 0);
   });
 
   const subTotal = computed(() => {
@@ -18,11 +24,11 @@ export function useCart() {
   });
 
   function addToCart(item) {
-    const currentItem = cart.value.filter((x) => x.id === item.id)[0];
+    const currentItem = shadowCart.value.filter((x) => x.id === item.id)[0];
     if (currentItem) {
       currentItem.quantity++;
     } else {
-      cart.value.push({
+      shadowCart.value.push({
         ...item,
         quantity: 1,
       });
@@ -30,19 +36,13 @@ export function useCart() {
   }
 
   function clearCart() {
-    cart.value = [];
-  }
-
-  function removeItem(index) {
-    console.log(index);
-    cart.value.splice(index, 1);
+    shadowCart.value = [];
   }
 
   return {
     subTotal,
     addToCart,
     cart,
-    removeItem,
     clearCart,
   };
 }
