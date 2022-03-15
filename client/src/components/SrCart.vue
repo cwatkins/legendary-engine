@@ -15,15 +15,12 @@ const props = defineProps({
   <div class="h-1/2 overflow-y-auto">
     <transition-group
       enter-from-class="transform opacity-0"
-      enter-active-class="delay-100 duration-200 ease-out"
-      leave-to-class="transform opacity-0"
-      leave-from-class="opacity-100"
-      leave-active-class="duration-200 ease-in"
+      enter-active-class="duration-100 ease-out"
     >
       <div
-        v-for="item in cart"
-        :key="item.name"
-        class="flex flex-row justify-between mt-2 text-base text-slate-800 font-medium"
+        v-for="(item, index) in cart"
+        :key="index"
+        class="flex flex-row justify-between mt-2 text-xl text-slate-800 font-medium"
       >
         <div class="flex flex-row w-full">
           <div>

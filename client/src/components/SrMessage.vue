@@ -28,7 +28,7 @@ const emit = defineEmits(["closeModal"]);
       <div class="relative flex h-screen w-auto pointer-events-none">
         <div
           v-if="modalText && modalTitle"
-          class="z-20 shadow-lg h-5/6 flex flex-col w-fit pointer-events-auto bg-neutral-50 mx-auto my-auto rounded-md px-2 rounded-md"
+          class="z-20 shadow-lg h-5/6 flex flex-col w-3/5 pointer-events-auto bg-neutral-50 mx-auto my-auto rounded-md px-2 rounded-md"
         >
           <div class="flex flex-shrink-0 items-center justify-between p-4">
             <h5 class="text-xl font-medium leading-normal text-gray-800">
@@ -37,7 +37,7 @@ const emit = defineEmits(["closeModal"]);
             <button type="button" @click="emit('closeModal')">X</button>
           </div>
           <div
-            class="relative mx-2 p-4 bg-neutral-200 mx-2 overflow-y-auto rounded-md"
+            class="flex flex-wrap break-words relative mx-2 p-4 bg-neutral-200 mx-2 overflow-y-auto rounded-md"
           >
             <pre>{{ modalText }}</pre>
           </div>

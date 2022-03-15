@@ -48,6 +48,7 @@ export function useReader() {
     let tries = 0;
     async function execute(resolve, reject) {
       tries++;
+      console.log("Try #", tries);
       const reader = await retrieveReader(readerId);
       const { reader_state } = reader;
       if (

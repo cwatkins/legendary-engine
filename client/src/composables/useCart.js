@@ -1,20 +1,10 @@
-import { ref, watchEffect, watch, computed } from "vue";
+import { ref, computed } from "vue";
 
 export function useCart() {
-  // const cart = ref([]);
   const shadowCart = ref([]);
 
-  // watchEffect(() => {
-  // cart.value.forEach((x) => {
-  //   if (x.quantity <= 0) {
-  //     const index = cart.value.indexOf(x.name);
-  //     cart.value.splice(index, 1);
-  //   }
-  // });
-  // });
-
   const cart = computed(() => {
-    return shadowCart.value.filter((x) => x.quantity > 0);
+    return shadowCart.value.filter((x) => x.quantity >= 1);
   });
 
   const subTotal = computed(() => {

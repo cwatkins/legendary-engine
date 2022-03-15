@@ -19,7 +19,9 @@ const emit = defineEmits(["addToCart"]);
 </script>
 
 <template>
-  <section class="grid grid-cols-2 gap-1 mr-2 overflow-y-auto h-screen w-1/2">
+  <section
+    class="grid grid-cols-2 gap-1 mr-2 overflow-y-auto h-screen w-1/2 pt-4 pl-1"
+  >
     <transition-group
       enter-from-class="transform opacity-0"
       enter-active-class="delay-100 duration-200 ease-out"
