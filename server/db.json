@@ -1,91 +1,91 @@
 [
   {
     "id": 1,
-    "name": "Issue 1: On-call",
+    "name": "Issue 1:\nOn-call",
     "price": 1200,
     "image": "/static/images/increment_issue_1.jpeg"
   },
   {
     "id": 2,
-    "name": "Issue 2: Cloud",
+    "name": "Issue 2:\nCloud",
     "price": 1200,
     "image": "/static/images/increment_issue_2.jpeg"
   },
   {
     "id": 3,
-    "name": "Issue 3: Development",
+    "name": "Issue 3:\nDevelopment",
     "price": 1200,
     "image": "/static/images/increment_issue_3.jpeg"
   },
   {
     "id": 4,
-    "name": "Issue 4: Energy & Development",
+    "name": "Issue 4:\nEnergy & Development",
     "price": 1200,
     "image": "/static/images/increment_issue_4.jpeg"
   },
   {
     "id": 5,
-    "name": "Issue 5: Programming Languages",
+    "name": "Issue 5:\nProgramming Languages",
     "price": 1400,
     "image": "/static/images/increment_issue_5.jpeg"
   },
   {
     "id": 6,
-    "name": "Issue 6: Documentation",
+    "name": "Issue 6:\nDocumentation",
     "price": 1400,
     "image": "/static/images/increment_issue_6.jpeg"
   },
   {
     "id": 7,
-    "name": "Issue 7: Security",
+    "name": "Issue 7:\nSecurity",
     "price": 1400,
     "image": "/static/images/increment_issue_7.jpeg"
   },
   {
     "id": 8,
-    "name": "Issue 8: Internationalization",
+    "name": "Issue 8:\nInternationalization",
     "price": 1400,
     "image": "/static/images/increment_issue_8.jpeg"
   },
   {
     "id": 9,
-    "name": "Issue 9: Open Source",
+    "name": "Issue 9:\nOpen Source",
     "price": 1400,
     "image": "/static/images/increment_issue_9.jpeg"
   },
   {
     "id": 10,
-    "name": "Issue 10: Testing",
+    "name": "Issue 10:\nTesting",
     "price": 1400,
     "image": "/static/images/increment_issue_10.jpeg"
   },
   {
     "id": 11,
-    "name": "Issue 11: Teams",
+    "name": "Issue 11:\nTeams",
     "price": 1400,
     "image": "/static/images/increment_issue_11.jpeg"
   },
   {
     "id": 12,
-    "name": "Issue 12: Software Architecture",
+    "name": "Issue 12:\nSoftware Architecture",
     "price": 1400,
     "image": "/static/images/increment_issue_12.jpeg"
   },
   {
     "id": 13,
-    "name": "Issue 13: Frontend",
+    "name": "Issue 13:\nFrontend",
     "price": 1400,
     "image": "/static/images/increment_issue_13.jpeg"
   },
   {
     "id": 14,
-    "name": "Issue 14: APIs",
+    "name": "Issue 14:\nAPIs",
     "price": 1400,
     "image": "/static/images/increment_issue_14.png"
   },
   {
     "id": 15,
-    "name": "A guide to distributed teams",
+    "name": "A guide\nto distributed teams",
     "price": 500,
     "image": "/static/images/increment_guide_distributed_teams.jpeg"
   }

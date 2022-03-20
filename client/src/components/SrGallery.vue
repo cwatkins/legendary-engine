@@ -20,7 +20,7 @@ const emit = defineEmits(["addToCart"]);
 
 <template>
   <section
-    class="grid grid-cols-2 gap-1 mr-2 overflow-y-auto h-screen w-1/2 pt-4 pl-1"
+    class="grid grid-cols-2 gap-2 mr-2 overflow-y-auto h-screen w-1/2 pt-4 pl-1"
   >
     <transition-group
       enter-from-class="transform opacity-0"
@@ -35,7 +35,7 @@ const emit = defineEmits(["addToCart"]);
         :name="product.name"
         :price="product.price"
         :image="product.image"
-        class="border"
+        class="drop-shadow"
         @click="emit('addToCart', product)"
       />
     </transition-group>

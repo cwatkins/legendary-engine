@@ -20,6 +20,8 @@ const checkoutReady = computed(() => {
   return currentReader.value && cart.value.length ? true : false;
 });
 
+const hasItems = computed(() => (subTotal.value > 0 ? true : false));
+
 const paymentState = ref(null);
 
 const isLoading = computed(() => {
@@ -98,25 +100,35 @@ function reset() {
 </script>
 <template>
   <div v-if="error">{{ error }}</div>
-  <div class="max-h-full min-w-screen max-w-screen bg-color-neutral-50">
-    <sr-header />
-  </div>
-  <div class="flex flex-row">
-    <sr-gallery
-      :class="{ 'pointer-events-none': isLoading }"
-      @add-to-cart="addToCart"
-    />
-    <div class="flex flex-col w-3/5 px-2 pt-2 mr-2 text-slate-800">
-      <sr-cart :cart="cart" :class="{ 'pointer-events-none': isLoading }" />
-      <sr-total :total="subTotal" />
-      <sr-checkout-button
-        :is-loading="isLoading"
-        :checkout-ready="checkoutReady"
-        :payment-state="paymentState"
-        @handle-payment="checkout()"
-        @clear-cart="reset()"
+  <sr-header class="bg-neutral-100 sticky top-0 left-0 right-0 z-10" />
+  <div class="relative flex flex-row justify-center bg-neutral-100">
+    <transition-group
+      enter-from-class="transform translate-x-full"
+      enter-active-class="delay-100 duration-300 ease-out"
+      leave-to-class="transform translate-x-full"
+      leave-from-class="translation-x-0"
+      leave-active-class="duration-300 ease-in"
+    >
+      <sr-gallery
+        class="transition duration-300 ease-out w-1/2"
+        :class="{
+          'pointer-events-none': isLoading,
+          'transform translation-x-0': hasItems,
+        }"
+        @add-to-cart="addToCart"
       />
-      <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />
-    </div>
+      <div v-if="hasItems" class="w-2/5 px-2 pt-2 mr-2 text-slate-800">
+        <sr-cart :cart="cart" :class="{ 'pointer-events-none': isLoading }" />
+        <sr-total :total="subTotal" />
+        <sr-checkout-button
+          :is-loading="isLoading"
+          :checkout-ready="checkoutReady"
+          :payment-state="paymentState"
+          @handle-payment="checkout()"
+          @clear-cart="reset()"
+        />
+        <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />
+      </div>
+    </transition-group>
   </div>
 </template>
