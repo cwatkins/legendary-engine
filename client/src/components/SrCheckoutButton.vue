@@ -15,7 +15,7 @@ const emit = defineEmits(["clearCart", "handlePayment"]);
 </script>
 <template>
   <button
-    class="text-slate-50 text-xl w-full p-2 mt-2 transition duration-300 bg-sky-600 rounded-md hover:brightness-125"
+    class="text-slate-50 text-base w-full p-2 mt-2 transition duration-300 bg-sky-600 rounded-md hover:brightness-125"
     :class="{
       'opacity-50 pointer-events-none disabled': !checkoutReady || isLoading,
     }"

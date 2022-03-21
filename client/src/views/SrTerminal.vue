@@ -10,6 +10,7 @@ import SrCart from "../components/SrCart.vue";
 import SrTotal from "../components/SrTotal.vue";
 import SrCheckoutButton from "../components/SrCheckoutButton.vue";
 import SrReaderList from "../components/SrReaderList.vue";
+import SrToast from "../components/SrToast.vue";
 
 const { cart, subTotal, addToCart, clearCart } = useCart();
 const { paymentIntentId, createPaymentIntent } = usePayment();
@@ -20,7 +21,7 @@ const checkoutReady = computed(() => {
   return currentReader.value && cart.value.length ? true : false;
 });
 
-const hasItems = computed(() => (subTotal.value > 0 ? true : false));
+const checkoutOpen = ref(false);
 
 const paymentState = ref(null);
 
@@ -77,7 +78,6 @@ async function handlePayment() {
 }
 
 async function checkout() {
-  console.log("handle_payment");
   const result = await handlePayment();
   if (result) {
     const { readerState } = result;
@@ -92,43 +92,50 @@ async function checkout() {
 }
 
 function reset() {
-  console.log("reset");
   clearCart();
   paymentIntentId.value = null;
   paymentState.value = null;
 }
 </script>
 <template>
-  <div v-if="error">{{ error }}</div>
-  <sr-header class="bg-neutral-100 sticky top-0 left-0 right-0 z-10" />
+  <sr-toast v-if="error" :message="error" />
+  <sr-header
+    class="bg-neutral-100 sticky top-0 left-0 right-0 z-10"
+    :checkout-open="checkoutOpen"
+    @open-cart="checkoutOpen = !checkoutOpen"
+  />
   <div class="relative flex flex-row justify-center bg-neutral-100">
-    <transition-group
-      enter-from-class="transform translate-x-full"
-      enter-active-class="delay-100 duration-300 ease-out"
-      leave-to-class="transform translate-x-full"
-      leave-from-class="translation-x-0"
-      leave-active-class="duration-300 ease-in"
-    >
+    <div class="grid grid-cols-11">
       <sr-gallery
-        class="transition duration-300 ease-out w-1/2"
+        class="col-start-2 col-span-5 transition duration-300 ease-out px-2"
         :class="{
           'pointer-events-none': isLoading,
-          'transform translation-x-0': hasItems,
         }"
         @add-to-cart="addToCart"
       />
-      <div v-if="hasItems" class="w-2/5 px-2 pt-2 mr-2 text-slate-800">
-        <sr-cart :cart="cart" :class="{ 'pointer-events-none': isLoading }" />
-        <sr-total :total="subTotal" />
-        <sr-checkout-button
-          :is-loading="isLoading"
-          :checkout-ready="checkoutReady"
-          :payment-state="paymentState"
-          @handle-payment="checkout()"
-          @clear-cart="reset()"
-        />
-        <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />
-      </div>
-    </transition-group>
+      <transition
+        enter-from-class="transform-all -translate-y-full opacity-0"
+        enter-active-class="delay-100 duration-300 ease-out"
+        leave-to-class="transform-all -translate-y-full opacity-0"
+        leave-from-class="translation-y-0 opacity-100"
+        leave-active-class="duration-300 ease-in"
+      >
+        <div
+          v-if="checkoutOpen"
+          class="col-start-7 col-span-4 px-1 pt-2 mr-2 text-slate-800"
+        >
+          <sr-cart :cart="cart" :class="{ 'pointer-events-none': isLoading }" />
+          <sr-total :total="subTotal" />
+          <sr-checkout-button
+            :is-loading="isLoading"
+            :checkout-ready="checkoutReady"
+            :payment-state="paymentState"
+            @handle-payment="checkout()"
+            @clear-cart="reset()"
+          />
+          <sr-reader-list @set-reader="(reader) => (currentReader = reader)" />
+        </div>
+      </transition>
+    </div>
   </div>
 </template>

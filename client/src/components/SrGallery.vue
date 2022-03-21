@@ -20,7 +20,7 @@ const emit = defineEmits(["addToCart"]);
 
 <template>
   <section
-    class="grid grid-cols-2 gap-2 mr-2 overflow-y-auto h-screen w-1/2 pt-4 pl-1"
+    class="grid grid-cols-2 gap-3 mr-2 overflow-y-auto h-screen pt-4 pl-1"
   >
     <transition-group
       enter-from-class="transform opacity-0"

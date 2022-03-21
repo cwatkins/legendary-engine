@@ -20,25 +20,25 @@ const props = defineProps({
       <div
         v-for="(item, index) in cart"
         :key="index"
-        class="flex flex-row justify-between mt-2 text-xl text-slate-800 font-medium"
+        class="flex flex-row justify-between mt-2 text-xs text-slate-800 font-medium"
       >
         <div class="flex flex-row w-full">
           <div>
             <button
-              class="bg-sky-600 text-slate-50 px-2 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
+              class="bg-sky-600 text-slate-50 px-1 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
               @click="item.quantity++"
             >
               +
             </button>
             <input :value="item.quantity" class="w-6 text-center" />
             <button
-              class="bg-sky-600 text-slate-50 px-2 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
+              class="bg-sky-600 text-slate-50 px-1 rounded-sm hover:brightness-125 hover:scale-105 drop-shadow"
               @click="item.quantity--"
             >
               -
             </button>
           </div>
-          <span class="ml-2 text-left">{{ item.name }}</span>
+          <span class="ml-2 text-left">Issue {{ item.id }}</span>
         </div>
         <div>{{ formatter.format((item.price / 100) * item.quantity) }}</div>
         <button

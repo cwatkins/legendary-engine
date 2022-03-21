@@ -11,7 +11,7 @@ const props = defineProps({
 
 <template>
   <hr />
-  <div class="flex flex-row justify-between text-xl font-semibold">
+  <div class="flex flex-row justify-between text-sm font-semibold">
     <span>Total</span>
     <span>{{ formatter.format(total / 100) }}</span>
   </div>
